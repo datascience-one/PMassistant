@@ -1,0 +1,207 @@
+models:
+  default: gemini-2.5-flash
+
+app:
+  name: PM_Assistant
+  user_id: pm_user
+
+project_defaults:
+  working_hours_per_day: 8
+  project_start_date: "2026-05-05"
+  skip_weekends: true
+
+# ── Pluggable Data Backend ──────────────────────────────────
+# Supported types: excel (default), sql, odoo, csv
+data_backend:
+  type: "excel"
+
+  # Excel backend
+  excel:
+    output_dir: "output"
+    root_dir: "."
+    # Optional: Map internal dataset names to specific Excel file names
+    file_map:
+      employees: "employees.xlsx"
+
+  # SQL backend (PostgreSQL / MySQL / SQLite)
+  sql:
+    connection_string: "sqlite:///pm_data.db"
+    # connection_string: "postgresql://user:pass@host:5432/pm_db"
+    # connection_string: "mysql+pymysql://user:pass@host:3306/pm_db"
+
+    # Optional: Map internal dataset names to actual tables in the database
+    table_map:
+      employees: "excel_data"
+
+  # Odoo ERP backend (XML-RPC)
+  odoo:
+    url: "https://your-odoo-instance.com"
+    db: "your_db"
+    username: "admin"
+    api_key: "your-api-key"
+    model_map:
+      employees: "hr.employee"
+      tasks: "project.task"
+      meetings: "calendar.event"
+      participants: "calendar.attendee"
+
+  # CSV flat-file backend
+  csv:
+    directory: "output/"
+
+limits:
+  max_tasks: 12
+  max_days: 100
+  max_budget: 100000
+
+role_map:
+  PM: "Project Manager"
+  UI/UX: "UI/UX Designer"
+  BE: "Backend Developer"
+  FE: "Frontend Developer"
+  QA: "QA Engineer"
+  DevOps: "DevOps Engineer"
+  BA: "Business Analyst"
+  FS: "Full Stack Developer"
+  "IT Infrastructure Team": "DevOps Engineer"
+  "Security Team": "DevOps Engineer"
+
+agents:
+
+  product_manager:
+    name: "ProductManagerAgent"
+    template: |
+      You are a Senior Product Manager.
+
+      You will receive JSON input:
+      {
+        "project_name": "...",
+        "project_description": "..."
+      }
+
+      Generate a complete Product Requirement Document (PRD).
+
+      You MUST call save_prd_tool with the following fields:
+
+      - product_name
+      - problem_statement
+      - goals (array)
+      - user_personas (array)
+      - functional_requirements (array)
+      - non_functional_requirements (array)
+      - constraints (array)
+      - assumptions (array)
+      - out_of_scope (array)
+
+      Do NOT output text.
+      Do NOT return JSON.
+      Only call the tool with structured arguments.
+
+
+  task_decomposer:
+    name: "TaskDecompositionAgent"
+    template: |
+      You are a Senior Technical Project Manager.
+
+      You will receive PRD JSON from the previous agent.
+
+      Your task:
+      1. Extract product_name from the PRD.
+      2. Generate structured development tasks.
+
+      Each task MUST include:
+        - task_id
+        - task_name
+        - assigned_role
+        - priority
+        - time_days
+        - budget
+        - dependencies (array)
+
+      After generating tasks,
+      you MUST call save_tasks_tool using EXACTLY this JSON structure:
+
+      {
+        "project_name": "<product_name>",
+        "tasks": [ ... list of task objects ... ]
+      }
+
+      Do NOT return explanation text.
+      Only call the tool.
+
+  scheduler:
+    name: "SchedulerAgent"
+    template: |
+      You are a Project Scheduling Agent.
+
+      You will receive JSON:
+      {
+        "project_name": "..."
+      }
+
+      Use the scheduling tool.
+
+      The tool will:
+      - Read {project_name}_Assigned.xlsx
+      - Use project_start_date from config
+      - Use working_hours_per_day
+      - Respect skip_weekends setting
+      - Generate real calendar dates
+      - Save {project_name}_Schedule.xlsx
+
+      Do not return explanatory text.
+      Only call the tool.
+
+  communication_agent:
+    template: |
+       You are a professional project communication assistant.
+
+        You will receive JSON input in this format:
+
+        {
+          "project_name": "...",
+          "tasks": [
+            {
+              "task_name": "...",
+              "assigned_empl": "...",
+              "assigned_email": "...",
+              "project_manager_email": "...",
+              "start_date": "...",
+              "end_date": "...",
+              "priority": "...",
+              "Schedule_Status": "..."
+            }
+          ]
+        }
+
+        For each task where Schedule_Status == "Scheduled":
+
+        1. Generate a professional email subject.
+        2. Generate a professional email body.
+        3. Call the send_email_tool with:
+          - to_email = assigned_email
+          - cc_email = project_manager_email
+          - subject
+          - body
+
+        Do NOT output text directly.
+        Always call the tool for each scheduled task.
+        Ignore tasks that are not scheduled.
+
+
+smtp:
+  email_env: "SENDER_EMAIL"
+  password_env: "SENDER_PASSWORD"
+  host: "smtp.gmail.com"
+  port: 465
+
+workflow:
+  poll_interval_seconds: 30
+  max_retries: 10
+
+telegram:
+  enabled: true
+  bot_token_env: "TELEGRAM_BOT_TOKEN"
+  chat_id_env: "TELEGRAM_CHAT_ID"      # PM fallback alert channel (system-level alerts)
+  bot_username: "ai_project_pm_bot"       # Set to your bot's @username (without @)
+                                        # Used in employee onboarding registration invite emails
