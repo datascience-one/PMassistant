@@ -1,0 +1,15 @@
+# Environment secrets - NEVER commit these
+.env
+integrated_pm_assistant/.env
+integrated_pm_assistant/credentials.json
+integrated_pm_assistant/token.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Generated output (test artifacts, not source code)
+integrated_pm_assistant/output/
