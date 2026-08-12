@@ -28,8 +28,8 @@ export default function NotificationsPage({ projectCtx }) {
                 <div className="empty-state-icon bg-gradient-to-br from-accent-emerald/10 to-accent-cyan/10">
                     <Bell className="w-9 h-9 text-accent-emerald" />
                 </div>
-                <h2 className="text-2xl font-black tracking-tight mb-2">Notifications</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <h2 className="text-2xl font-black tracking-tight mb-2 text-surface-900 dark:text-surface-100">Notifications</h2>
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Enter a project name to view Telegram notifications sent.
                 </p>
                 <div className="project-input-group">
@@ -62,7 +62,7 @@ export default function NotificationsPage({ projectCtx }) {
             <div className="page-header animate-fade-in-up">
                 <p className="page-subtitle">Notifications</p>
                 <h1 className="page-title gradient-text">{data.project_name}</h1>
-                <p className="text-surface-500 text-sm font-semibold mt-1">{notifications.length} notifications sent via Telegram</p>
+                <p className="text-surface-600 dark:text-surface-400 text-sm font-semibold mt-1">{notifications.length} notifications sent via Telegram</p>
             </div>
 
             {notifications.length > 0 ? (

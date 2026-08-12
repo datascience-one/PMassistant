@@ -47,7 +47,8 @@ export default function Sidebar({ dark, setDark }) {
     const location = useLocation()
 
     return (
-        <aside className="hidden md:flex flex-col w-64 border-r border-surface-800/40 bg-surface-950/98 backdrop-blur-3xl transition-all duration-500 shrink-0">
+        <aside className="hidden md:flex flex-col w-64 border-r border-surface-300 dark:bg-surface-800/40 
+        bg-white dark:bg-surface-950/98 backdrop-blur-3xl transition-all duration-500 shrink-0">
             {/* ── Logo ──────────── */}
             <div className="px-6 pt-8 pb-6">
                 <div className="flex items-center gap-3 group px-1">
@@ -55,7 +56,7 @@ export default function Sidebar({ dark, setDark }) {
                         <Sparkles className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-base font-black tracking-tight text-white leading-none">PM ASSISTANT</h1>
+                        <h1 className="text-base font-black tracking-tight text-surface-900 dark:text-white leading-none">PM ASSISTANT</h1>
                         <p className="text-[10px] text-surface-500 font-bold tracking-[0.2em] uppercase mt-1">
                             PM INTELLIGENCE
                         </p>
@@ -67,7 +68,7 @@ export default function Sidebar({ dark, setDark }) {
             <nav className="flex-1 px-4 py-2 space-y-7 overflow-y-auto scrollbar-none">
                 {sections.map((section) => (
                     <div key={section.label} className="space-y-2">
-                        <p className="px-4 text-[10px] font-black text-surface-600 uppercase tracking-[0.25em] opacity-80">
+                        <p className="px-4 text-[10px] font-black text-surface-500 dark:text-surface-600 uppercase tracking-[0.25em] opacity-80">
                             {section.label}
                         </p>
                         <div className="space-y-1">
@@ -81,7 +82,7 @@ export default function Sidebar({ dark, setDark }) {
                                             group relative flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200
                                             ${isActive
                                                 ? 'bg-accent-cyan/10 text-accent-cyan shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]'
-                                                : 'text-surface-400 hover:bg-surface-800/40 hover:text-surface-100'
+                                                : 'text-surface-700 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-800/40 hover:text-surface-900 dark:hover:text-surface-100'
                                             }
                                         `}
                                     >
@@ -115,10 +116,10 @@ export default function Sidebar({ dark, setDark }) {
             </nav>
 
             {/* ── Bottom ────────── */}
-            <div className="px-4 py-6 space-y-6 border-t border-surface-800/40 bg-surface-950/40">
+            <div className="px-4 py-6 space-y-6 border-t border-surface-300 dark:border-surface-800/40 bg-surface-100 dark:bg-surface-950/40">
                 {/* Data Backend pills */}
                 <div className="px-2">
-                    <p className="mb-3 text-[10px] font-black text-surface-600 uppercase tracking-[0.2em]">
+                    <p className="mb-3 text-[10px] font-black text-surface-600 dark:text-surface-400 uppercase tracking-[0.2em]">
                         DATA BACKEND
                     </p>
                     <div className="grid grid-cols-2 gap-2">
@@ -127,7 +128,7 @@ export default function Sidebar({ dark, setDark }) {
                                 key={b}
                                 className={`flex items-center justify-center py-1.5 rounded-lg text-[10px] font-extrabold cursor-pointer transition-all border ${i === 0
                                     ? 'bg-accent-cyan/10 text-accent-cyan border-accent-cyan/20 shadow-sm shadow-accent-cyan/5'
-                                    : 'text-surface-500 hover:text-surface-300 border-surface-800/50 hover:border-surface-700/50 bg-surface-900/40'
+                                    : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-300 border-surface-300 dark:border-surface-800/50 hover:border-surface-400 dark:hover:border-surface-700/50 bg-surface-50 dark:bg-surface-900/40'
                                     }`}
                             >
                                 {b}
@@ -150,9 +151,9 @@ export default function Sidebar({ dark, setDark }) {
                     <button
                         id="dark-mode-toggle"
                         onClick={() => setDark(!dark)}
-                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-surface-400 hover:bg-surface-800/50 hover:text-surface-100 transition-all border border-transparent hover:border-surface-800/50 group"
+                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-surface-700 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-800/50 hover:text-surface-900 dark:hover:text-surface-100 transition-all border border-transparent hover:border-surface-300 dark:hover:border-surface-800/50 group"
                     >
-                        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-surface-900 group-hover:bg-surface-800 transition-colors">
+                        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-surface-200 dark:bg-surface-900 group-hover:bg-surface-300 dark:group-hover:bg-surface-800 transition-colors">
                             {dark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
                         </div>
                         <span className="flex-1 text-left">{dark ? 'Light Mode' : 'Dark Mode'}</span>

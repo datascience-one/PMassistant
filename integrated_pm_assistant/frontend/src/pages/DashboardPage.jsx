@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
     Download,
     FileJson,
@@ -53,7 +54,7 @@ function StatCard({ icon: Icon, label, value, gradient, glow, delay = 0 }) {
                 </div>
             </div>
             <p className="text-3xl font-black tracking-tight">{value}</p>
-            <p className="text-xs font-semibold text-surface-400 mt-1 uppercase tracking-wider">{label}</p>
+            <p className="text-xs font-semibold text-surface-600 dark:text-surface-400 mt-1 uppercase tracking-wider">{label}</p>
             <div className={`absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-br ${gradient} opacity-[0.06]`} style={{ transform: 'translate(30%,-30%)' }} />
         </div>
     )
@@ -87,6 +88,8 @@ export default function DashboardPage({ projectCtx }) {
     const [error, setError] = useState(null)
     const [projectInput, setProjectInput] = useState(projectCtx?.projectName || '')
     const [syncing, setSyncing] = useState(false)
+    const [searchParams] = useSearchParams()
+    const projectFromUrl = searchParams.get('project')
 
     async function handleSync() {
         if (!data?.project_name || syncing) return
@@ -118,26 +121,32 @@ export default function DashboardPage({ projectCtx }) {
     }
 
     useEffect(() => {
-        if (projectCtx?.projectName) loadResults(projectCtx.projectName)
-        else setLoading(false)
-    }, [projectCtx?.projectName])
+        const project = projectFromUrl || projectCtx?.projectName
+        
+        if (project) {
+            setProjectInput(project)
+            loadResults(project)
+        } else {
+            setLoading(false)
+        }
+    }, [projectFromUrl, projectCtx?.projectName])
 
     /* ── Empty state ──────── */
     if (!loading && !data) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+            <div className="empty-state animate-fade-in-up">
                 <div className="fixed inset-0 -z-10">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary-500/5 blur-3xl" />
                 </div>
-                <div className="w-full max-w-md text-center animate-fade-in-up">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500/10 to-accent-violet/10 mb-5">
+                <div className="w-full max-w-md text-center">
+                    <div className="empty-state-icon bg-gradient-to-br from-primary-500/10 to-accent-violet/10">
                         <Sparkles className="w-9 h-9 text-primary-500" />
                     </div>
                     <h2 className="text-2xl font-extrabold tracking-tight mb-2">Load a Project</h2>
-                    <p className="text-surface-500 text-sm mb-7 leading-relaxed">
+                    <p className="text-surface-600 dark:text-surface-400 text-sm mb-7 leading-relaxed">
                         Enter a project name to view its generated results and analytics.
                     </p>
-                    <div className="flex gap-2">
+                    <div className="project-input-group">
                         <input
                             id="load-project-input"
                             type="text"

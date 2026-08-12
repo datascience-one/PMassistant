@@ -41,7 +41,7 @@ export default function ResourcesPage({ projectCtx }) {
                     <Users className="w-9 h-9 text-accent-cyan" />
                 </div>
                 <h2 className="text-2xl font-black tracking-tight mb-2">Resources</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Enter a project name to view resource assignments.
                 </p>
                 <div className="project-input-group">
@@ -81,7 +81,7 @@ export default function ResourcesPage({ projectCtx }) {
             <div className="page-header animate-fade-in-up">
                 <p className="page-subtitle">Resources</p>
                 <h1 className="page-title gradient-text">{data.project_name}</h1>
-                <p className="text-surface-500 text-sm font-semibold mt-1">{Object.keys(grouped).length} team members assigned</p>
+                <p className="text-surface-600 dark:text-surface-400 text-sm font-semibold mt-1">{Object.keys(grouped).length} team members assigned</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -92,14 +92,14 @@ export default function ResourcesPage({ projectCtx }) {
                                 {name.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold truncate">{name}</p>
-                                <p className="text-[10px] text-surface-400 font-medium truncate">{info.email || 'No email'}</p>
+                                <p className="text-sm font-bold text-surface-900 dark:text-surface-100 truncate">{name}</p>
+                                <p className="text-[10px] text-surface-600 dark:text-surface-400 font-medium truncate">{info.email || 'No email'}</p>
                             </div>
                             <Badge color="violet">{info.tasks.length}</Badge>
                         </div>
                         <ul className="space-y-1.5">
                             {info.tasks.map((t, j) => (
-                                <li key={j} className="text-xs text-surface-500 dark:text-surface-400 flex items-start gap-2 leading-relaxed">
+                                <li key={j} className="text-xs text-surface-600 dark:text-surface-400 flex items-start gap-2 leading-relaxed">
                                     <span className="text-primary-400 mt-0.5 shrink-0">▸</span> {t}
                                 </li>
                             ))}

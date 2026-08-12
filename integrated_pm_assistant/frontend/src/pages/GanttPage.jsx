@@ -34,7 +34,7 @@ export default function GanttPage({ projectCtx }) {
                     <BarChart3 className="w-9 h-9 text-accent-cyan" />
                 </div>
                 <h2 className="text-2xl font-black tracking-tight mb-2">Gantt Chart</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Enter a project name to view its schedule as a Gantt chart.
                 </p>
                 <div className="project-input-group">
@@ -69,7 +69,7 @@ export default function GanttPage({ projectCtx }) {
                     <h1 className="page-title gradient-text">{data.project_name}</h1>
                 </div>
                 <div className="glass-card dash-card text-center py-16">
-                    <p className="text-surface-500 text-sm font-semibold">No schedule data available for this project.</p>
+                    <p className="text-surface-600 dark:text-surface-400 text-sm font-semibold">No schedule data available for this project.</p>
                 </div>
             </div>
         )
@@ -90,7 +90,7 @@ export default function GanttPage({ projectCtx }) {
                     <h1 className="page-title gradient-text">{data.project_name}</h1>
                 </div>
                 <div className="glass-card dash-card text-center py-16">
-                    <p className="text-surface-500 text-sm font-semibold">Schedule dates could not be parsed.</p>
+                    <p className="text-surface-600 dark:text-surface-400 text-sm font-semibold">Schedule dates could not be parsed.</p>
                 </div>
             </div>
         )
@@ -116,11 +116,11 @@ export default function GanttPage({ projectCtx }) {
                         const leftPct = ((s.startDate - minDate) / (1000 * 60 * 60 * 24)) / totalDays * 100
                         const widthPct = Math.max(2, ((s.endDate - s.startDate) / (1000 * 60 * 60 * 24)) / totalDays * 100)
                         return (
-                            <div key={i} className="flex items-center gap-4 py-2 group hover:bg-surface-800/20 rounded-lg px-2 transition-colors">
-                                <div className="w-[200px] shrink-0 text-xs font-semibold truncate text-surface-300">
+                            <div key={i} className="flex items-center gap-4 py-2 group hover:bg-surface-100 dark:hover:bg-surface-800/20 rounded-lg px-2 transition-colors">
+                                <div className="w-[200px] shrink-0 text-xs font-semibold truncate text-surface-700 dark:text-surface-300">
                                     {s.task_name || s.task}
                                 </div>
-                                <div className="flex-1 relative h-7 rounded-lg bg-surface-800/20">
+                                <div className="flex-1 relative h-7 rounded-lg bg-surface-100 dark:bg-surface-800/20">
                                     <div
                                         className={`absolute top-0.5 bottom-0.5 rounded-md ${COLORS[s.colorIdx]} opacity-80 group-hover:opacity-100 transition-opacity flex items-center px-2`}
                                         style={{ left: `${leftPct}%`, width: `${widthPct}%` }}

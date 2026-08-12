@@ -54,8 +54,8 @@ export default function MeetingsPage({ projectCtx }) {
                 <div className="empty-state-icon bg-gradient-to-br from-accent-amber/10 to-accent-rose/10">
                     <CalendarDays className="w-9 h-9 text-accent-amber" />
                 </div>
-                <h2 className="text-2xl font-black tracking-tight mb-2">Meetings</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <h2 className="text-2xl font-black tracking-tight mb-2 text-surface-900 dark:text-surface-100">Meetings</h2>
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Enter a project name to view meeting status and RSVPs.
                 </p>
                 <div className="project-input-group">
@@ -113,8 +113,8 @@ export default function MeetingsPage({ projectCtx }) {
                             <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${gradient} shadow-lg mb-2`}>
                                 <StatIcon className="w-5 h-5 text-white" />
                             </div>
-                            <p className="text-3xl font-black tracking-tight">{value ?? 0}</p>
-                            <p className="text-[10px] font-bold text-surface-400 mt-1 uppercase tracking-wider">{label}</p>
+                            <p className="text-3xl font-black tracking-tight text-surface-900 dark:text-surface-100">{value ?? 0}</p>
+                            <p className="text-[10px] font-bold text-surface-600 dark:text-surface-400 mt-1 uppercase tracking-wider">{label}</p>
                         </div>
                     ))}
                 </div>
@@ -123,11 +123,11 @@ export default function MeetingsPage({ projectCtx }) {
             {/* Participants Table */}
             {participants.length > 0 && (
                 <div className="glass-card dash-card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                    <h2 className="text-base font-extrabold tracking-tight mb-4">Participants</h2>
+                    <h2 className="text-base font-extrabold tracking-tight mb-4 text-surface-900 dark:text-surface-100">Participants</h2>
                     <div className="overflow-x-auto rounded-2xl border border-surface-200/40 dark:border-surface-700/30">
                         <table className="premium-table">
                             <thead>
-                                <tr className="bg-surface-50/80 dark:bg-surface-800/40 text-surface-400">
+                                <tr className="bg-surface-50/80 dark:bg-surface-800/40 text-surface-600 dark:text-surface-400">
                                     <th className="text-left rounded-tl-2xl">Email</th>
                                     <th className="text-left">Response</th>
                                     <th className="text-left rounded-tr-2xl">Meeting ID</th>
@@ -141,7 +141,7 @@ export default function MeetingsPage({ projectCtx }) {
                                         <tr key={i}>
                                             <td className="text-sm font-medium">{p.Email}</td>
                                             <td><Badge color={color}>{status.toUpperCase()}</Badge></td>
-                                            <td className="text-xs text-surface-400 font-mono">{p.Meeting_ID || '—'}</td>
+                                            <td className="text-xs text-surface-600 dark:text-surface-400 font-mono">{p.Meeting_ID || '—'}</td>
                                         </tr>
                                     )
                                 })}
