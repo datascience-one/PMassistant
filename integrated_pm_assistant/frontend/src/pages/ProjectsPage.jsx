@@ -28,8 +28,8 @@ export default function ProjectsPage() {
                 <div className="empty-state-icon bg-gradient-to-br from-primary-500/10 to-accent-violet/10">
                     <FolderKanban className="w-9 h-9 text-primary-500" />
                 </div>
-                <h2 className="text-2xl font-black tracking-tight mb-2">No Projects Yet</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <h2 className="text-2xl font-black tracking-tight mb-2 text-surface-900 dark:text-surface-100">No Projects Yet</h2>
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Generate your first project to see it listed here.
                 </p>
                 <button
@@ -62,14 +62,14 @@ export default function ProjectsPage() {
                                 <FileText className="w-5 h-5 text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h3 className="text-sm font-extrabold truncate group-hover:text-primary-500 transition-colors">{p.name}</h3>
-                                <p className="text-[10px] text-surface-500 font-semibold uppercase tracking-wider">
+                                <h3 className="text-sm font-extrabold text-surface-900 dark:text-surface-100 truncate group-hover:text-primary-500 transition-colors">{p.name}</h3>
+                                <p className="text-[10px] text-surface-600 dark:text-surface-400 font-semibold uppercase tracking-wider">
                                     {p.files} files
                                 </p>
                             </div>
-                            <ArrowUpRight className="w-4 h-4 text-surface-500 opacity-0 group-hover:opacity-100 transition-all" />
+                            <ArrowUpRight className="w-4 h-4 text-surface-600 dark:text-surface-400 opacity-0 group-hover:opacity-100 transition-all" />
                         </div>
-                        <div className="flex items-center gap-2 text-[10px] text-surface-400 font-medium">
+                        <div className="flex items-center gap-2 text-[10px] text-surface-600 dark:text-surface-400 font-medium">
                             <Clock className="w-3 h-3" />
                             <span>{p.modified || 'Recent'}</span>
                         </div>

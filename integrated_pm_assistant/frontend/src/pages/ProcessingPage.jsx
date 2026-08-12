@@ -97,16 +97,16 @@ export default function ProcessingPage({ projectCtx }) {
                         </div>
                     </div>
 
-                    <h1 className="text-2xl font-extrabold tracking-tight">
+                    <h1 className="text-2xl font-extrabold tracking-tight text-surface-900 dark:text-surface-100">
                         {status === 'completed' ? 'Pipeline Complete!' : status === 'failed' ? 'Pipeline Failed' : 'Building your project...'}
                     </h1>
-                    <p className="mt-1.5 text-surface-500 text-sm font-semibold">{projectCtx.projectName}</p>
+                    <p className="mt-1.5 text-surface-600 dark:text-surface-400 text-sm font-semibold">{projectCtx.projectName}</p>
                 </div>
 
                 {/* Progress bar */}
                 <div className="glass-card rounded-2xl p-5 mb-5">
                     <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-[10px] font-bold text-surface-400 uppercase tracking-widest">Progress</span>
+                        <span className="text-[10px] font-bold text-surface-600 dark:text-surface-400 uppercase tracking-widest">Progress</span>
                         <span className="text-sm font-extrabold gradient-text">{Math.round(progress)}%</span>
                     </div>
                     <div className="h-2.5 rounded-full bg-surface-200/60 dark:bg-surface-800/60 overflow-hidden">
@@ -141,7 +141,7 @@ export default function ProcessingPage({ projectCtx }) {
                                     }`}>
                                     {done ? <CheckCircle2 className="w-4 h-4" /> : active ? <Loader2 className="w-4 h-4 animate-spin" /> : <Icon className="w-4 h-4" />}
                                 </div>
-                                <span className={`text-sm font-semibold ${done ? 'text-accent-emerald' : active ? 'text-primary-600 dark:text-primary-400' : 'text-surface-400'
+                                <span className={`text-sm font-semibold ${done ? 'text-accent-emerald' : active ? 'text-primary-600 dark:text-primary-400' : 'text-surface-600 dark:text-surface-400'
                                     }`}>
                                     {label}
                                 </span>

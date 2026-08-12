@@ -47,12 +47,12 @@ export default function TaskBoardPage({ projectCtx }) {
 
     if (!loading && !data) {
         return (
-            <div className="empty-state animate-fade-in-up">
+            <div className="empty-state animate-fade-in-up bg-surface-50 dark:bg-surface-950">
                 <div className="empty-state-icon bg-gradient-to-br from-accent-violet/10 to-primary-500/10">
                     <ListChecks className="w-9 h-9 text-accent-violet" />
                 </div>
                 <h2 className="text-2xl font-black tracking-tight mb-2">Task Board</h2>
-                <p className="text-surface-500 text-sm mb-6 max-w-sm leading-relaxed">
+                <p className="text-surface-600 dark:text-surface-400 text-sm mb-6 max-w-sm leading-relaxed">
                     Enter a project name to view its generated tasks.
                 </p>
                 <div className="project-input-group">
@@ -77,7 +77,7 @@ export default function TaskBoardPage({ projectCtx }) {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
                 <div className="w-10 h-10 border-3 border-primary-500/20 border-t-primary-500 rounded-full animate-spin" />
             </div>
         )
@@ -86,11 +86,11 @@ export default function TaskBoardPage({ projectCtx }) {
     const tasks = data?.tasks || []
 
     return (
-        <div className="page-container space-y-6">
+        <div className="page-container space-y-6 bg-surface-50 dark:bg-surface-950">
             <div className="page-header animate-fade-in-up">
                 <p className="page-subtitle">Task Board</p>
                 <h1 className="page-title gradient-text">{data.project_name}</h1>
-                <p className="text-surface-500 text-sm font-semibold mt-1">{tasks.length} tasks generated</p>
+                <p className="text-surface-600 dark:text-surface-400 text-sm font-semibold mt-1">{tasks.length} tasks generated</p>
             </div>
 
             <div className="glass-card dash-card animate-fade-in-up" style={{ animationDelay: '100ms' }}>
@@ -109,7 +109,7 @@ export default function TaskBoardPage({ projectCtx }) {
                         <tbody>
                             {tasks.map((t, i) => (
                                 <tr key={i}>
-                                    <td className="font-mono text-xs text-surface-400 font-bold">{t.task_id}</td>
+                                    <td className="font-mono text-xs text-surface-600 dark:text-surface-400 font-bold">{t.task_id}</td>
                                     <td className="font-semibold max-w-[280px]">{t.task_name}</td>
                                     <td className="text-surface-500 text-xs font-medium">{t.assigned_role}</td>
                                     <td><Badge color={priorityColor(t.priority)}>{t.priority}</Badge></td>
