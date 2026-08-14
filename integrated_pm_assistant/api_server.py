@@ -379,8 +379,38 @@ def project_results(project_name):
 
         # Extract telegram notifications from the scheduled data
         if "assigned_empl" in df.columns:
-            notified = df["assigned_empl"].dropna().unique().tolist()
-            result["telegram_notifications"] = notified
+            assigned_names = df["assigned_empl"].dropna().unique().tolist()
+
+            # Load employees.xlsx to check who is actually reachable on Telegram
+            try:
+                employees_path = BASE_DIR / "employees.xlsx"
+                emp_df = pd.read_excel(employees_path)
+            except Exception:
+                emp_df = pd.DataFrame()
+
+            sent = []
+            skipped = []
+
+            for name in assigned_names:
+                row = emp_df[emp_df["Employee_Name"] == name]
+
+                if row.empty:
+                    skipped.append(name)
+                    continue
+
+                chat_id = str(row.iloc[0].get("telegram_chat_id", "")).strip()
+                enabled = str(row.iloc[0].get("telegram_enabled", "")).strip().lower()
+
+                is_valid_chat_id = chat_id and chat_id.lower() not in ("", "nan", "none")
+                is_enabled = enabled in ("true", "1", "yes")
+
+                if is_valid_chat_id and is_enabled:
+                    sent.append(name)
+                else:
+                    skipped.append(name)
+
+            result["telegram_notifications"] = sent
+            result["telegram_notifications_skipped"] = skipped
 
     # Meetings
     meetings_path = OUTPUT_DIR / f"{project_name}_Meetings.xlsx"
