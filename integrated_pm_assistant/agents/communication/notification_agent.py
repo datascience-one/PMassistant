@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Optional
 
 from agents.communication.notifiers.email_notifier import EmailNotifier
 from agents.communication.notifiers.telegram_notifier import TelegramNotifier
-
+import pandas as pd
 
 class NotificationAgent:
     """
@@ -141,12 +141,18 @@ class NotificationAgent:
         Send the full formatted shortage report email + Telegram alert to PM.
         Email body matches the original bordered format.
         """
-        self._email.send(
+        if not pm_email or str(pm_email).strip().lower() == "nan":
+            print("⚠️ PM email missing. Skipping email notification.")
+        else:
+            self._email.send(
             to_email=pm_email,
             subject=f"🚨 Resource Shortage Detected – Action Required | {project_name}",
             message=self._shortage_email_body(
-                project_name, missing_roles, impacted_tasks,
-                diagnostic_file_path, workflow_state_path,
+                project_name,
+                missing_roles,
+                impacted_tasks,
+                diagnostic_file_path,
+                workflow_state_path,
             ),
         )
 
