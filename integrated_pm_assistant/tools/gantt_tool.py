@@ -45,7 +45,7 @@ def _apply_dependency_scheduling(df, project_start):
     for idx in df[no_dep_mask].index:
         duration = (df.at[idx, "end_date"] - df.at[idx, "start_date"]).days
         df.at[idx, "end_date"] = df.at[idx, "start_date"] + pd.Timedelta(days=duration)
-        end_dates[df.at[idx, "task_name"]] = df.at[idx, "end_date"]
+        end_dates[df.at[idx, "task_id"]] = df.at[idx, "end_date"]
 
     # 🔥 STEP 2: Handle dependent tasks (ITERATIVE, NOT SEQUENTIAL ORDER)
     unresolved = df[~no_dep_mask].copy()
@@ -65,7 +65,7 @@ def _apply_dependency_scheduling(df, project_start):
                 df.at[idx, "start_date"] = start
                 df.at[idx, "end_date"] = end
 
-                end_dates[row["task_name"]] = end
+                end_dates[row["task_id"]] = end
                 resolved_in_this_pass = True
 
         if not resolved_in_this_pass:
@@ -74,7 +74,7 @@ def _apply_dependency_scheduling(df, project_start):
 
         # Remove resolved tasks
         unresolved = df[
-            df["task_name"].apply(lambda x: x not in end_dates)
+            df["task_id"].apply(lambda x: x not in end_dates)
         ]
 
     return df
