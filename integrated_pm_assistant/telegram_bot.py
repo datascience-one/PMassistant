@@ -182,13 +182,22 @@ def handle_add_employee(bot: TelegramBot, chat_id: str, text: str) -> None:
         # Handle column name variations (some files use "Allocated_Hour" without 's')
         allocated_col = "Allocated_Hours" if "Allocated_Hours" in employees_df.columns else "Allocated_Hour"
 
+        # Auto-generate the next Employee_ID
+        existing_ids = employees_df["Employee_ID"].dropna().astype(str)
+        existing_nums = [int(eid[3:]) for eid in existing_ids if eid.startswith("EMP") and eid[3:].isdigit()]
+        next_id = f"EMP{max(existing_nums) + 1:03d}" if existing_nums else "EMP001"
+
         new_row = pd.DataFrame([{
+            "Employee_ID": next_id,
             "Employee_Name": name,
             "Role": role,
             "Free_Hours": hours,
             allocated_col: 0,
             "Current_Project": "",
             "Email": "",  # PM can fill in later
+            "telegram_chat_id": None,
+            "telegram_enabled": False,
+            "Department": "Unassigned",
         }])
 
         # Append -- triggers mtime change on employees.xlsx -> auto-reassignment
