@@ -137,6 +137,12 @@ def build_communication_agent():
         instruction=MEETING_SYNC_INSTRUCTION,
         tools=[check_rsvp_tool, send_reminder_tool, reschedule_meeting_tool],
     )
+    
+    comm_done = DeterministicAgent(                    
+        name="comm_done_signal",
+        description="Signals communication stage completed",
+        logic=lambda x: (print("Communication stage completed"), x)[1],
+    )
 
     return SequentialAgent(
         name="communication_agent",
@@ -144,5 +150,5 @@ def build_communication_agent():
             "Hybrid communication agent: deterministic meeting creation "
             "followed by LLM-powered RSVP, reminders, and rescheduling."
         ),
-        sub_agents=[meeting_creator, meeting_sync],
+        sub_agents=[meeting_creator, meeting_sync, comm_done],
     )
