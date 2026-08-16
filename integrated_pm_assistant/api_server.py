@@ -67,6 +67,7 @@ STEP_KEYWORDS = [
     ("Telegram message sent", "Sending Notifications..."),
     ("Kickoff meeting created successfully", "Creating Kickoff Meeting..."),
     ("RSVP", "Checking Meeting RSVPs..."),
+    ("Communication stage completed", "Finalizing Communication..."),
     ("Execution Completed", "Finalizing Execution..."),
 ]
 
@@ -212,6 +213,32 @@ def _run_pipeline(job_id: str, project_name: str, project_description: str):
                         if text:
                             final_output += text
 
+                # ── NEW: verify every required stage actually completed ────
+                REQUIRED_STEPS = [
+                    "PRD JSON saved",
+                    "PRD PDF saved",
+                    "Tasks saved",
+                    "All resources assigned for",
+                    "Schedule saved",
+                    "Communication stage completed",
+                ]
+                missing_steps = [
+                    step for step in REQUIRED_STEPS
+                    if not any(step in line for line in capture.lines)
+                ]
+
+                if missing_steps:
+                    job["status"] = "failed"
+                    job["current_step"] = "Error: Pipeline stopped early"
+                    job["error"] = (
+                        "Pipeline finished without a Python error, but these "
+                        "stages never completed: " + ", ".join(missing_steps) +
+                        ". This usually means an LLM call silently failed partway through."
+                    )
+                    job["logs"] = capture.lines
+                    print(f"❌ Pipeline claimed success but missing steps: {missing_steps}")
+                    return
+                    
                 # Success! Mark as completed
                 job["status"] = "completed"
                 job["current_step"] = "Done"
@@ -379,8 +406,38 @@ def project_results(project_name):
 
         # Extract telegram notifications from the scheduled data
         if "assigned_empl" in df.columns:
-            notified = df["assigned_empl"].dropna().unique().tolist()
-            result["telegram_notifications"] = notified
+            assigned_names = df["assigned_empl"].dropna().unique().tolist()
+
+            # Load employees.xlsx to check who is actually reachable on Telegram
+            try:
+                employees_path = BASE_DIR / "employees.xlsx"
+                emp_df = pd.read_excel(employees_path)
+            except Exception:
+                emp_df = pd.DataFrame()
+
+            sent = []
+            skipped = []
+
+            for name in assigned_names:
+                row = emp_df[emp_df["Employee_Name"] == name]
+
+                if row.empty:
+                    skipped.append(name)
+                    continue
+
+                chat_id = str(row.iloc[0].get("telegram_chat_id", "")).strip()
+                enabled = str(row.iloc[0].get("telegram_enabled", "")).strip().lower()
+
+                is_valid_chat_id = chat_id and chat_id.lower() not in ("", "nan", "none")
+                is_enabled = enabled in ("true", "1", "yes")
+
+                if is_valid_chat_id and is_enabled:
+                    sent.append(name)
+                else:
+                    skipped.append(name)
+
+            result["telegram_notifications"] = sent
+            result["telegram_notifications_skipped"] = skipped
 
     # Meetings
     meetings_path = OUTPUT_DIR / f"{project_name}_Meetings.xlsx"
